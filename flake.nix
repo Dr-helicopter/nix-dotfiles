@@ -35,5 +35,17 @@
 			# Optionally use extraSpecialArgs
 			# to pass through arguments to home.nix
 		};
+		homeConfigurations.helic-non-nix = home-manager.lib.homeManagerConfiguration {
+			inherit pkgs;
+
+			modules = [
+				./home.nix
+				./non-nixos.nix
+			];
+
+			extraSpecialArgs = {
+				inherit nixgl;
+			};
+		};
     };
 }

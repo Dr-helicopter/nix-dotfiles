@@ -1,11 +1,6 @@
 { config, pkgs, nixgl, lib, ... }:
 
 {
-	# Home Manager needs a bit of information about you and the paths it should
-	# manage.
-
-
-
 	home.username = "helic";
 	home.homeDirectory = "/home/helic";
 
@@ -24,17 +19,13 @@
 
 	home.packages = with pkgs;[
 		hyprland
-
+		hyprcursor
+		rose-pine-hyprcursor
 	];
 
-
-	# Home Manager is pretty good at managing dotfiles. The primary way to manage
-	# plain files is through 'home.file'.
 	home.file = {
-		# # Building this configuration will create a copy of 'dotfiles/screenrc' in
-		# # the Nix store. Activating the configuration will then make '~/.screenrc' a
-		# # symlink to the Nix store copy.
-		# ".screenrc".source = dotfiles/screenrc;
+		".config/ls_color.sh".source = ./shell/ls_color.sh;
+		".config/ffff/config.sh".source = ./shell/ffff_config.sh;
 
 		# # You can also set the file content immediately.
 		# ".gradle/gradle.properties".text = ''
@@ -62,11 +53,35 @@
 	home.sessionVariables = {
 		EDITOR = "nvim";
 		SUDO_EDITOR = "nvim";
+		MANPAGER = "nvim +Man!";
+		SCRIPTS_PATH = "~/scripts";
+		LUA_SCRIPTS_PATH = "~/scripts/lua";
 	};
 
 	# Let Home Manager install and manage itself.
 	programs.home-manager.enable = true;
 
+	programs.zsh = {
+		enable = true;
+		autosuggestion.enable = true;
+
+		initContent = ''
+			# If not running interactively, don't do anything
+			[[ $- != *i* ]] && return
+
+			export HISTFILE=~/.shell_history
+			export HISTSIZE=10000
+			export SAVEHIST=10000
+			export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=$zsh_suggestion_col",bg=0"
+
+			source ~/.config/ls_color.sh
+			source ~/.config/zsh/prompt.zsh
+			source ~/.config/zsh/fff.setup.sh
+			source ~/.config/zsh/commands.sh
+			source ~/.config/zsh/keybindings.sh
+		'';
+	};
+	home.file.".config/zsh".source = ./zsh;
 
 	programs.mpv = {
 		enable=true;

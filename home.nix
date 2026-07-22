@@ -28,10 +28,13 @@ in
 	# environment.
 
 	home.packages = with pkgs;[
+		alsa-utils
+		ffmpeg
 		hyprland
 		hyprcursor
 		rose-pine-hyprcursor
 		CustomWmenu
+		nerd-fonts.mononoki
 	];
 
 	home.file = {
@@ -39,11 +42,12 @@ in
 		".config/ffff/config.sh".source = ./shell/ffff_config.sh;
 
 		"programs/.generic".text = ''
-#!/usr/bin/env bash
+			#!/usr/bin/env bash
 
 			exec $(basename "$0")
 		'';
 	};
+	home.file."programs/.generic".executable = true;
 
 	# Home Manager can also manage your environment variables through
 	# 'home.sessionVariables'. These will be explicitly sourced when using a
@@ -93,6 +97,7 @@ in
 			source ~/.config/zsh/fff.setup.sh
 			source ~/.config/zsh/commands.sh
 			source ~/.config/zsh/keybindings.sh
+			[[ -f "$HOME/.zshrc_local" ]] && source "$HOME/.zshrc_local"
 		'';
 	};
 	home.file.".config/zsh".source = ./zsh;
@@ -115,6 +120,22 @@ in
 			"A" = "seek -60";
 
 			"c" = "cycle audio";
+		};
+	};
+
+	programs.foot = {
+		enable = true;
+		settings = {
+			main = {
+				font = "Mononoki Nerd Font Mono:style=Regular:size=15";
+				font-bold = "Mononoki Nerd Font Mono:style=Bold:size=15";
+				font-italic = "Mononoki Nerd Font Mono:style=Italic:size=15";
+				font-bold-italic = "Mononoki Nerd Font Mono:style=BoldItalic:size=15";
+				dpi-aware = true;
+			};
+			cursor = {
+				style = "block";
+			};
 		};
 	};
 }

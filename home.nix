@@ -1,5 +1,15 @@
 { config, pkgs, nixgl, lib, ... }:
 
+let
+	CustomWmenu = pkgs.wmenu.overrideAttrs (oldAttrs: {
+			src = pkgs.fetchFromGitHub {
+			owner = "Dr-helicopter";
+			repo = "wmenu";
+			rev = "main";
+			hash = "sha256-X0Q3IdIe5oLzF5TXbhV8JZmrLEIl5qGiNBi0kaAuVVY=";
+		};
+	});
+in
 {
 	home.username = "helic";
 	home.homeDirectory = "/home/helic";
@@ -21,17 +31,18 @@
 		hyprland
 		hyprcursor
 		rose-pine-hyprcursor
+		CustomWmenu
 	];
 
 	home.file = {
 		".config/ls_color.sh".source = ./shell/ls_color.sh;
 		".config/ffff/config.sh".source = ./shell/ffff_config.sh;
 
-		# # You can also set the file content immediately.
-		# ".gradle/gradle.properties".text = ''
-		#	 org.gradle.console=verbose
-		#	 org.gradle.daemon.idletimeout=3600000
-		# '';
+		"programs/.generic".text = ''
+#!/usr/bin/env bash
+
+			exec $(basename "$0")
+		'';
 	};
 
 	# Home Manager can also manage your environment variables through
@@ -58,6 +69,9 @@
 		LUA_SCRIPTS_PATH = "~/scripts/lua";
 	};
 
+	home.sessionPath = [ 
+		"$HOME/scripts"
+	];
 	# Let Home Manager install and manage itself.
 	programs.home-manager.enable = true;
 

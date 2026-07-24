@@ -9,6 +9,28 @@ let
 			hash = "sha256-X0Q3IdIe5oLzF5TXbhV8JZmrLEIl5qGiNBi0kaAuVVY=";
 		};
 	});
+	color-palate= {
+		bg= "000000";
+		fg= "c5efff";
+
+		c0 = "141414";
+		c1 = "f62b5a";
+		c2 = "17a411";
+		c3 = "e3a401";
+		c4 = "144c84";
+		c5 = "df1fdf";
+		c6 = "13c299";
+		c7 = "e6e6e6";
+
+		c8 = "616161";
+		c9 = "ff4d51";
+		c10= "35d450";
+		c11= "e9e836";
+		c12= "7dc5ff";
+		c13= "feabf2";
+		c14= "24dfc4";
+		c15= "ffffff";
+	};
 in
 {
 	home.username = "helic";
@@ -32,9 +54,11 @@ in
 		ffmpeg
 		hyprland
 		hyprcursor
+		jq
 		rose-pine-hyprcursor
 		CustomWmenu
 		nerd-fonts.mononoki
+		ayugram-desktop
 	];
 
 	home.file = {
@@ -135,6 +159,30 @@ in
 			};
 			cursor = {
 				style = "block";
+			};
+			colors-dark = {
+				alpha = 1;
+				alpha-mode = "default";
+				background = color-palate.bg;
+				foreground = color-palate.fg;
+
+				regular0 = color-palate.c0;
+				regular1 = color-palate.c1;
+				regular2 = color-palate.c2;
+				regular3 = color-palate.c3;
+				regular4 = color-palate.c4;
+				regular5 = color-palate.c5;
+				regular6 = color-palate.c6;
+				regular7 = color-palate.c7;
+
+				bright0 = color-palate.c8;
+				bright1 = color-palate.c9;
+				bright2 = color-palate.c10;
+				bright3 = color-palate.c11;
+				bright4 = color-palate.c12;
+				bright5 = color-palate.c13;
+				bright6 = color-palate.c14;
+				bright7 = color-palate.c15;
 			};
 		};
 	};

@@ -1,4 +1,4 @@
-{ config, pkgs, nixgl, lib, ... }:
+{ config, pkgs, nixgl, lib, machine, ... }:
 
 let
 	CustomWmenu = pkgs.wmenu.overrideAttrs (oldAttrs: {
@@ -31,6 +31,9 @@ let
 		c14= "24dfc4";
 		c15= "ffffff";
 	};
+	foot-font-size = 
+		if machine == "nixman" then "15"
+		else "10";
 in
 {
 	home.username = "helic";
@@ -64,6 +67,7 @@ in
 	home.file = {
 		".config/ls_color.sh".source = ./shell/ls_color.sh;
 		".config/ffff/config.sh".source = ./shell/ffff_config.sh;
+		"scripts/open.sh".source = ./shell/open.sh;
 
 		"programs/.generic".text = ''
 			#!/usr/bin/env bash
@@ -106,6 +110,9 @@ in
 	programs.zsh = {
 		enable = true;
 		autosuggestion.enable = true;
+		shellAliases = {
+			x = "~/scripts/open.sh";
+		};
 
 		initContent = ''
 			# If not running interactively, don't do anything
@@ -150,11 +157,15 @@ in
 	programs.foot = {
 		enable = true;
 		settings = {
-			main = {
-				font = "Mononoki Nerd Font Mono:style=Regular:size=15";
-				font-bold = "Mononoki Nerd Font Mono:style=Bold:size=15";
-				font-italic = "Mononoki Nerd Font Mono:style=Italic:size=15";
-				font-bold-italic = "Mononoki Nerd Font Mono:style=BoldItalic:size=15";
+			main = 
+			let
+				font-family = "Mononoki Nerd Font Mono";
+			in
+			{
+				font = "${font-family}:style=Regular:size=${foot-font-size}";
+				font-bold = "${font-family}:style=Bold:size=${foot-font-size}";
+				font-italic = "${font-family}:style=Italic:size=${foot-font-size}";
+				font-bold-italic = "${font-family}:style=BoldItalic:size=${foot-font-size}";
 				dpi-aware = true;
 			};
 			cursor = {

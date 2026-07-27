@@ -22,7 +22,7 @@
 		pkgs = nixpkgs.legacyPackages.${system};
 	in
 	{
-		homeConfigurations."helic" = home-manager.lib.homeManagerConfiguration {
+		homeConfigurations."nixman" = home-manager.lib.homeManagerConfiguration {
 			inherit pkgs;
 
 			# Specify your home configuration modules here, for example,
@@ -31,11 +31,13 @@
 
 			extraSpecialArgs = {
 				inherit nixgl;
+				machine = "nixman";
 			};
 			# Optionally use extraSpecialArgs
 			# to pass through arguments to home.nix
 		};
-		homeConfigurations.helic-non-nix = home-manager.lib.homeManagerConfiguration {
+
+		homeConfigurations."Gandalf" = home-manager.lib.homeManagerConfiguration {
 			inherit pkgs;
 
 			modules = [
@@ -45,6 +47,7 @@
 
 			extraSpecialArgs = {
 				inherit nixgl;
+				machine = "Gandalf";
 			};
 		};
     };

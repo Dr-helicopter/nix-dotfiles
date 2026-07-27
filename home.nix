@@ -62,6 +62,8 @@ in
 		CustomWmenu
 		nerd-fonts.mononoki
 		ayugram-desktop
+		godot
+		fastfetch
 	];
 
 	home.file = {
@@ -73,6 +75,12 @@ in
 			#!/usr/bin/env bash
 
 			exec $(basename "$0")
+		'';
+		
+		".lesskey".text = ''
+			# command
+			w back-line
+			s forw-line
 		'';
 	};
 	home.file."programs/.generic".executable = true;

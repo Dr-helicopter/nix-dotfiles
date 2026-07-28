@@ -171,6 +171,28 @@ home-manager switch --impure --flake "$HOME"/.config/home-manager#"$(uname -n)"
 		};
 	};
 
+
+	programs.zathura = {
+		enable = true;
+
+		mappings = {
+			q = "quit";
+
+			D = "toggle_page_mode";
+
+			w = "scroll up";
+			s = "scroll down";
+			a = "scroll left";
+			d = "scroll right";
+
+			W = "navigate previous";
+			S = "navigate next";
+
+			"<A-w>" = "zoom in";
+			"<A-s>" = "zoom out";
+		};
+	};
+
 	programs.foot = {
 		enable = true;
 		settings = {

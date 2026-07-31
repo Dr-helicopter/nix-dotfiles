@@ -2,9 +2,13 @@
 {
 	wayland.windowManager.hyprland.enable = true;
 	wayland.windowManager.hyprland.sourceFirst = true;
+	
+	imports = [
+		./animations.nix
+	];
+
 	wayland.windowManager.hyprland.extraLuaFiles = {
 		imports.content = ''
-		require("animations")
 		require("keybindings")
 		require("rules")
 		'';
@@ -31,6 +35,7 @@
 				allow_tearing = false;
 				layout = "dwindle";
 			};
+
 			decoration = {
 				active_opacity   = 1.0;
 				inactive_opacity = 0.95;
@@ -38,8 +43,6 @@
 				shadow.enabled = true;
 				blur.enabled = false;
 			};
-
-			animations.enabled = true;
 
 			dwindle = {
 				preserve_split = true;
@@ -56,7 +59,7 @@
 				kb_layout  = "us, ir";
 				kb_variant = "";
 				kb_model   = "";
-				kb_options = "grp:alt_shift_toggle,caps:hyper,compose:menu";
+				kb_options = "grp:alt_shift_toggle,caps:hyper,compose:menu,shift:both_capslock";
 				kb_rules   = "";
 
 				repeat_rate = 60;

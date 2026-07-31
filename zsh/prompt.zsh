@@ -17,8 +17,12 @@ short_pwd() {
 	print "$out"
 }
 
+if [[ $PATH == /nix/store/*/bin ]]; then 
+	indecator="$indecator"}
+fi
+
 zstyle ':vcs_info:git:*' formats '(%b)'
 zstyle ':vcs_info:*' enable git
 
-PS1='%F{green}%n%F{cyan}@%B%F{green}%m%f %F{81}$(short_pwd)%f %F{magenta}${vcs_info_msg_0_}%B%F{black}> %f'
+PS1='%F{green}%n%F{cyan}@%B%F{green}%m%f %F{81}$(short_pwd)%f %F{magenta}${vcs_info_msg_0_}%B%F{black}'"$indecator"'> %f'
 

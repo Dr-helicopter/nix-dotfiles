@@ -1,4 +1,4 @@
-{ config, pkgs, nixgl, lib, machine, ... }:
+{ config, pkgs, nixgl, lib, machine, theme, ... }:
 
 let
 	CustomWmenu = pkgs.wmenu.overrideAttrs (oldAttrs: {
@@ -9,28 +9,6 @@ let
 			hash = "sha256-X0Q3IdIe5oLzF5TXbhV8JZmrLEIl5qGiNBi0kaAuVVY=";
 		};
 	});
-	color-palate= {
-		bg= "000000";
-		fg= "c5efff";
-
-		c0 = "141414";
-		c1 = "f62b5a";
-		c2 = "17a411";
-		c3 = "e3a401";
-		c4 = "144c84";
-		c5 = "df1fdf";
-		c6 = "13c299";
-		c7 = "e6e6e6";
-
-		c8 = "616161";
-		c9 = "ff4d51";
-		c10= "35d450";
-		c11= "e9e836";
-		c12= "7dc5ff";
-		c13= "feabf2";
-		c14= "24dfc4";
-		c15= "ffffff";
-	};
 	foot-font-size = 
 		if machine == "nixman" then "15"
 		else "10";
@@ -49,9 +27,6 @@ in
 	# release notes.
 	home.stateVersion = "26.05"; # Please read the comment before changing.
 
-	# The home.packages option allows you to install Nix packages into your
-	# environment.
-
 	home.packages = with pkgs;[
 		alsa-utils
 		ffmpeg
@@ -64,6 +39,11 @@ in
 		ayugram-desktop
 		godot
 		fastfetch
+		neovim-remote
+	];
+
+	imports = [
+		./hyprland
 	];
 
 	home.file = {
@@ -213,26 +193,26 @@ home-manager switch --impure --flake "$HOME"/.config/home-manager#"$(uname -n)"
 			colors-dark = {
 				alpha = 1;
 				alpha-mode = "default";
-				background = color-palate.bg;
-				foreground = color-palate.fg;
+				background = theme.bg;
+				foreground = theme.fg;
 
-				regular0 = color-palate.c0;
-				regular1 = color-palate.c1;
-				regular2 = color-palate.c2;
-				regular3 = color-palate.c3;
-				regular4 = color-palate.c4;
-				regular5 = color-palate.c5;
-				regular6 = color-palate.c6;
-				regular7 = color-palate.c7;
+				regular0 = theme.c0;
+				regular1 = theme.c1;
+				regular2 = theme.c2;
+				regular3 = theme.c3;
+				regular4 = theme.c4;
+				regular5 = theme.c5;
+				regular6 = theme.c6;
+				regular7 = theme.c7;
 
-				bright0 = color-palate.c8;
-				bright1 = color-palate.c9;
-				bright2 = color-palate.c10;
-				bright3 = color-palate.c11;
-				bright4 = color-palate.c12;
-				bright5 = color-palate.c13;
-				bright6 = color-palate.c14;
-				bright7 = color-palate.c15;
+				bright0 = theme.c8;
+				bright1 = theme.c9;
+				bright2 = theme.c10;
+				bright3 = theme.c11;
+				bright4 = theme.c12;
+				bright5 = theme.c13;
+				bright6 = theme.c14;
+				bright7 = theme.c15;
 			};
 		};
 	};

@@ -32,6 +32,7 @@
 			extraSpecialArgs = {
 				inherit nixgl;
 				machine = "nixman";
+				theme = import ./theme.nix;
 			};
 			# Optionally use extraSpecialArgs
 			# to pass through arguments to home.nix
@@ -48,6 +49,7 @@
 			extraSpecialArgs = {
 				inherit nixgl;
 				machine = "Gandalf";
+				theme = import ./theme.nix;
 			};
 		};
     };

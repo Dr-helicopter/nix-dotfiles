@@ -5,12 +5,12 @@
 	
 	imports = [
 		./animations.nix
+		./rules.nix
 	];
 
 	wayland.windowManager.hyprland.extraLuaFiles = {
 		imports.content = ''
 		require("keybindings")
-		require("rules")
 		'';
 	};
 	wayland.windowManager.hyprland.settings = {

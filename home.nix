@@ -44,6 +44,9 @@ in
 		newsboat
 	];
 
+	services.hyprpaper.enable = true;
+
+
 	imports = [
 		./hyprland
 	];
@@ -173,6 +176,17 @@ home-manager switch --impure --flake "$HOME"/.config/home-manager#"$(uname -n)"
 
 			"<A-w>" = "zoom in";
 			"<A-s>" = "zoom out";
+
+			"w fullscreen" = "scroll up";
+			"s fullscreen" = "scroll down";
+			"a fullscreen" = "scroll left";
+			"d fullscreen" = "scroll right";
+
+			"W fullscreen" = "navigate previous";
+			"S fullscreen" = "navigate next";
+
+			"<A-w> fullscreen" = "zoom in";
+			"<A-s> fullscreen" = "zoom out";
 		};
 	};
 

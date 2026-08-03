@@ -27,7 +27,7 @@
 				gaps_out = 4;
         		border_size = 1;
 				col = {
-					active_border = "#"+theme.c6;
+					active_border = "#"+theme.c14;
 					inactive_border = "#"+theme.c4;
 				};
 

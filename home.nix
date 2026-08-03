@@ -32,6 +32,8 @@ in
 		ffmpeg
 		hyprland
 		hyprcursor
+		swappy
+		grim
 		jq
 		rose-pine-hyprcursor
 		CustomWmenu
@@ -40,8 +42,8 @@ in
 		godot
 		fastfetch
 		neovim-remote
-		zip
 		newsboat
+		zip
 	];
 
 	services.hyprpaper.enable = true;

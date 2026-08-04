@@ -8,6 +8,13 @@
 		./rules.nix
 	];
 
+
+
+	home.file.".config/hypr/scripts/toggle_floating_focus.py" = {
+		source = ./scripts/toggle_floating_focus.py;
+		executable = true;
+	};
+		
 	wayland.windowManager.hyprland.extraLuaFiles = {
 		imports.content = ''
 		require("keybindings")
@@ -33,7 +40,7 @@
 
 				resize_on_border = false;
 				allow_tearing = false;
-				layout = "dwindle";
+				layout = "scrolling";
 			};
 
 			decoration = {
@@ -47,12 +54,13 @@
 			dwindle = {
 				preserve_split = true;
 			};
-			master = {
-				new_status = "master";
-			};
 
 			scrolling = {
+				follow_focus = true;
 				fullscreen_on_one_column = true;
+				column_width = 0.7;
+				focus_fit_method = 1;
+				follow_min_visible = 0.02;
 			};
 
 			input = {

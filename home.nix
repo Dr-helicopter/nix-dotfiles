@@ -43,7 +43,7 @@ in
 		fastfetch
 		neovim-remote
 		newsboat
-		zip
+		zip unzip
 	];
 
 	services.hyprpaper.enable = true;
@@ -166,7 +166,6 @@ home-manager switch --impure --flake "$HOME"/.config/home-manager#"$(uname -n)"
 			q = "quit";
 
 			D = "toggle_page_mode";
-			f = "toggle_fullscreen";
 
 			w = "scroll up";
 			s = "scroll down";

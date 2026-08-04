@@ -13,9 +13,9 @@
 		animation = [
 			{ enabled = true; leaf = "global"; speed = 10; bezier = "default"; }
 			
-			{ enabled = true; leaf = "workspaces"   ; speed = 1.94; bezier = "easeInOutCubic"; style = "slidefade"; }
-			{ enabled = true; leaf = "workspacesIn" ; speed = 1.21; bezier = "easeInOutCubic"; style = "slidefade"; }
-			{ enabled = true; leaf = "workspacesOut"; speed = 1.94; bezier = "easeInOutCubic"; style = "slidefade"; }
+			{ enabled = true; leaf = "workspaces"   ; speed = 1.94; bezier = "easeInOutCubic"; style = "slidefadevert"; }
+			{ enabled = true; leaf = "workspacesIn" ; speed = 1.21; bezier = "easeInOutCubic"; style = "slidefadevert"; }
+			{ enabled = true; leaf = "workspacesOut"; speed = 1.94; bezier = "easeInOutCubic"; style = "slidefadevert"; }
 			{ enabled = true; leaf = "border" 		; speed = 5.39; bezier = "easeOutQuint"	 ; }
 			{ enabled = true; leaf = "windows"		; speed = 4.79; spring = "easy" 		 ; }
 			{ enabled = true; leaf = "windowsIn"	; speed = 4.1 ; spring = "easy"		 	 ; style = "popin 87%"; }

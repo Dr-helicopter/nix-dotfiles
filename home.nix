@@ -6,7 +6,7 @@ let
 			owner = "Dr-helicopter";
 			repo = "wmenu";
 			rev = "main";
-			hash = "sha256-X0Q3IdIe5oLzF5TXbhV8JZmrLEIl5qGiNBi0kaAuVVY=";
+			hash = "sha256-bUr4AyxCLygOcWe37UALmEsnI1ADsbjRiejb5ZqRekE=";
 		};
 	});
 	foot-font-size = 
@@ -43,6 +43,9 @@ in
 		fastfetch
 		neovim-remote
 		newsboat
+		obs-studio
+		gimp
+		libreoffice
 		zip unzip
 	];
 
@@ -56,6 +59,19 @@ in
 	home.file = {
 		".config/ls_color.sh".source = ./shell/ls_color.sh;
 		".config/ffff/config.sh".source = ./shell/ffff_config.sh;
+		".config/color_scheme".text = ''
+			BG_PRIME=${theme.bg}
+			TEXT_PRIME=${theme.fg}
+			
+			COLOR0=${theme.c0}
+			COLOR1=${theme.c1}
+			COLOR2=${theme.c2}
+			COLOR3=${theme.c3}
+			COLOR4=${theme.c4}
+			COLOR5=${theme.c5}
+			COLOR6=${theme.c6}
+			COLOR7=${theme.c7}
+		'';
 		"scripts/open.sh".source = ./shell/open.sh;
 
 		"programs/.generic".text = ''

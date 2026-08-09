@@ -28,10 +28,12 @@ in
 	home.stateVersion = "26.05"; # Please read the comment before changing.
 
 	home.packages = with pkgs;[
+		btop
 		alsa-utils
 		ffmpeg
 		hyprland
 		hyprcursor
+		hyprpaper
 		swappy
 		grim
 		jq
@@ -48,8 +50,23 @@ in
 		libreoffice
 		zip unzip
 	];
+ 
+	# services.hyprpaper.enable = true;
+	systemd.user.services.hyprpaper_custom = {
+		Unit = {
+			Description = "custom hyprpaper";
+			After = [ "graphical-session.target" ];
+		};
 
-	services.hyprpaper.enable = true;
+		Install = {
+			WantedBy = [ "graphical-session.target" ];
+		};
+		Service = {
+			ExecStart = "${nixgl.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/nixGL hyprpaper";
+
+			# ExecStart = "${pkgs.hyprpaper}/bin/hyprpaper";
+		};
+	};
 
 
 	imports = [
@@ -117,8 +134,8 @@ home-manager switch --impure --flake "$HOME"/.config/home-manager#"$(uname -n)"
 		EDITOR = "nvim";
 		SUDO_EDITOR = "nvim";
 		MANPAGER = "nvim +Man!";
-		SCRIPTS_PATH = "~/scripts";
-		LUA_SCRIPTS_PATH = "~/scripts/lua";
+		SCRIPTS_PATH = "$HOME/scripts";
+		LUA_SCRIPTS_PATH = "$HOME/scripts/lua";
 	};
 
 	home.sessionPath = [ 

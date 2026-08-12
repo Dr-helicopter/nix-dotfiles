@@ -151,6 +151,10 @@ home-manager switch --impure --flake "$HOME"/.config/home-manager#"$(uname -n)"
 			x = "~/scripts/open.sh";
 		};
 
+		setOptions = [
+			"EXTENDED_GLOB"
+		];
+
 		initContent = ''
 			# If not running interactively, don't do anything
 			[[ $- != *i* ]] && return

@@ -149,6 +149,7 @@ home-manager switch --impure --flake "$HOME"/.config/home-manager#"$(uname -n)"
 		autosuggestion.enable = true;
 		shellAliases = {
 			x = "~/scripts/open.sh";
+			rsca = "rsync -carv --progress";
 		};
 
 		setOptions = [

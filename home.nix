@@ -29,6 +29,7 @@ in
 
 	home.packages = with pkgs;[
 		btop
+		moreutils
 		alsa-utils
 		ffmpeg
 		hyprland

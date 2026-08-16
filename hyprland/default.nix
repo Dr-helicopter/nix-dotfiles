@@ -89,7 +89,7 @@
 
 		gesture = {
 			fingers = 3;
-			direction = "horizontal";
+			direction = "vertical";
 			action = "workspace";
 		};
 	};

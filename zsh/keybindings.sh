@@ -72,7 +72,7 @@ delete-argument() {
 	done
 
 	BUFFER="${BUFFER[1,start-1]}${BUFFER[end+1,-1]}"
-	while [[ "$BUFFER" ==  *' ' |  "$BUFFER" ==  *"\n"]]; do
+	while [[ "$BUFFER" ==  *' ' ||  "$BUFFER" ==  *"\n" ]]; do
 		BUFFER="${BUFFER:0:-1}"
 	done
 

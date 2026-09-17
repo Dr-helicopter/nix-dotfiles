@@ -44,6 +44,7 @@ in
 		ayugram-desktop
 		godot
 		fastfetch
+		sshfs
 		neovim-remote
 		newsboat
 		obs-studio

@@ -1,16 +1,20 @@
 #!/usr/bin/env bash
 
 
+: ${BROWSER:=qutebrowser}
+: ${IMG_VIWR:=zathura}
+
 open_file() {
 	file="$1"
 	ext="${file##*.}"
-	: ${IMG_VIWR:=zathura}
 
 	[[ -f $LUA_SCRIPTS_PATH/celebi.lua ]] &&
 		mpv_args="--script=$LUA_SCRIPTS_PATH/celebi.lua"
 
-	[[ $TERM == 'linux' ]] &&
+	[[ $TERM == 'linux' ]] && {
 		IMG_VIWR=fbi
+		mpv_args="$mpv_args --vo=drm"
+	}
 	
 
 	case "${ext,,}" in
@@ -18,10 +22,10 @@ open_file() {
 		zathura				"$file" ;;
 
 	mp3|m4a|wav|flac)
-		mpv	"$mpv_args"		"$file" ;;
+		mpv	$mpv_args		"$file" ;;
 
 	mp4|mkv|avi)
-		mpv "$mpv_args"		"$file" ;;
+		mpv $mpv_args		"$file" ;;
 
 	webp|jpeg|jpg|png)
 		$IMG_VIWR			"$file" ;;
@@ -30,7 +34,7 @@ open_file() {
 		nvim				"$file" ;;
 		
 	html|htm)
-		qutebrowser			"$file" ;;
+		"$BROWSER" 			"$file" ;;
 
 	zip)
 		unzip				"$file" ;;
@@ -65,6 +69,8 @@ if [[ $# == 1 ]]; then
 	open_file "$1"
 elif [[ $1 == 'd' ]]; then 
 	download $2
+elif [[ $1 == 'l' ]]; then
+	"$BROWSER" "$2"
 fi
 
 

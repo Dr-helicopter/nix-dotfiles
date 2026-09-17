@@ -21,7 +21,7 @@ wifi.home() {
 wifi.phon() {
 	nmcli device wifi rescan
 	sleep 3 
-	nmcli device wifi connect Helic
+	nmcli device wifi connect 'Airport of Hell'
 }
 
 

@@ -177,6 +177,26 @@ home-manager switch --impure --flake "$HOME"/.config/home-manager#"$(uname -n)"
 	};
 	home.file.".config/zsh".source = ./zsh;
 
+	xdg.desktopEntries.fff = {
+		name = "fff";
+		comment = "Terminal file manager";
+		exec = "${pkgs.foot}/bin/foot fff %f";
+		terminal = false;
+		type = "Application";
+		noDisplay = true;
+		mimeType = [ "inode/directory" ];
+	};
+
+	xdg.configFile."mimeapps.list".force = true;
+	xdg.mimeApps = {
+		enable = true;
+
+		defaultApplications = {
+		"inode/directory" = [ "fff.desktop" ];
+		};
+	};
+
+
 	programs.mpv = {
 		enable=true;
 		config = {
@@ -197,7 +217,6 @@ home-manager switch --impure --flake "$HOME"/.config/home-manager#"$(uname -n)"
 			"c" = "cycle audio";
 		};
 	};
-
 
 	programs.zathura = {
 		enable = true;

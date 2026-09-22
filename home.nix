@@ -51,6 +51,7 @@ in
 		gimp
 		libreoffice
 		zip unzip
+		niri
 	];
  
 	# services.hyprpaper.enable = true;
@@ -65,14 +66,13 @@ in
 		};
 		Service = {
 			ExecStart = "${nixgl.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/nixGL hyprpaper";
-
-			# ExecStart = "${pkgs.hyprpaper}/bin/hyprpaper";
 		};
 	};
 
 
 	imports = [
 		./hyprland
+		./niri
 	];
 
 	home.file = {

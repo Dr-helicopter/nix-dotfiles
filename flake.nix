@@ -43,7 +43,7 @@
 
 			modules = [
 				./home.nix
-				./non-nixos.nix
+				#./non-nixos.nix
 			];
 
 			extraSpecialArgs = {

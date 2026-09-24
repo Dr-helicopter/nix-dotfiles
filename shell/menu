@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+[[ -f ~/.config/color_scheme ]] && source ~/.config/color_scheme
+
+if pgrep -x wmenu; then
+	pkill wmenu
+else
+	# there is probobly cleaner ways of doing this
+	exec ~/programs/$(
+		ls ~/programs | wmenu -c -l 5  \
+		--bw 1 \
+		-N $BG_PRIME \
+		-n $TEXT_PRIME \
+		-S $COLOR4 \
+		-i
+	)
+fi

@@ -28,17 +28,12 @@ in
 	home.stateVersion = "26.05"; # Please read the comment before changing.
 
 	home.packages = with pkgs;[
+		niri
 		btop
 		moreutils
 		alsa-utils
 		ffmpeg
-		hyprland
-		hyprcursor
-		hyprpaper
-		swappy
-		grim
 		jq
-		rose-pine-hyprcursor
 		CustomWmenu
 		nerd-fonts.mononoki
 		ayugram-desktop
@@ -51,27 +46,13 @@ in
 		gimp
 		libreoffice
 		zip unzip
-		niri
+		qutebrowser
+		firefox
 	];
  
-	# services.hyprpaper.enable = true;
-	systemd.user.services.hyprpaper_custom = {
-		Unit = {
-			Description = "custom hyprpaper";
-			After = [ "graphical-session.target" ];
-		};
-
-		Install = {
-			WantedBy = [ "graphical-session.target" ];
-		};
-		Service = {
-			ExecStart = "${nixgl.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/nixGL hyprpaper";
-		};
-	};
 
 
 	imports = [
-		./hyprland
 		./niri
 	];
 
@@ -92,6 +73,7 @@ in
 			COLOR7=${theme.c7}
 		'';
 		"scripts/open.sh".source = ./shell/open.sh;
+		"scripts/menu".source = ./shell/menu;
 
 		"programs/.generic".text = ''
 			#!/usr/bin/env bash

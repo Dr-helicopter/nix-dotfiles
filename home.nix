@@ -34,6 +34,7 @@ in
 		alsa-utils
 		ffmpeg
 		jq
+		jcal
 		CustomWmenu
 		nerd-fonts.mononoki
 		ayugram-desktop
@@ -48,6 +49,7 @@ in
 		zip unzip
 		qutebrowser
 		firefox
+		zellij
 	];
  
 

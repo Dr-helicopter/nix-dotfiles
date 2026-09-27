@@ -43,6 +43,7 @@
 
 			modules = [
 				./home.nix
+				./device-specific/Gandalf.nix
 				#./non-nixos.nix
 			];
 

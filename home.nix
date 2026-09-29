@@ -29,12 +29,14 @@ in
 
 	home.packages = with pkgs;[
 		niri
+		swaybg
 		btop
 		moreutils
 		alsa-utils
 		ffmpeg
 		jq
 		jcal
+		asciidoctor
 		CustomWmenu
 		nerd-fonts.mononoki
 		ayugram-desktop
@@ -47,6 +49,7 @@ in
 		gimp
 		libreoffice
 		zip unzip
+		aria2
 		qutebrowser
 		firefox
 		zellij

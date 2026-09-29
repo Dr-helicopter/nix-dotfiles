@@ -14,4 +14,9 @@
 			  theme.c1
 			]
 			(builtins.readFile ./config.kdl);
+
+	home.file."scripts/music-workspace-toggle.sh" = {
+		source = ./scripts/music-workspace-toggle.sh;
+		executable = true;
+	};
 }

@@ -392,19 +392,12 @@ binds {
 		spawn "brightnessctl" "--class=backlight" "set" "10%-"; 
 	}
 
-	Mod+Alt+1 {
-		spawn-sh "musicman-daemon vdown"
-	}
+	Mod+Alt+1 { spawn-sh "musicman-daemon vdown"; }
+	Mod+Alt+2 { spawn-sh "musicman-daemon pause-play"; }
+	Mod+Alt+3 { spawn-sh "musicman-daemon vup"; }
 
-	Mod+Alt+3 {
-		spawn-sh "musicman-daemon vup"
-	}
- 	Mod+Alt+7 { 
-		spawn "brightnessctl" "--class=backlight" "set" "+5%"; 
-	}
-    Mod+Alt+6 {
-		spawn "brightnessctl" "--class=backlight" "set" "5%-"; 
-	}
+ 	Mod+Alt+7 { spawn "brightnessctl" "--class=backlight" "set" "+5%"; }
+    Mod+Alt+6 { spawn "brightnessctl" "--class=backlight" "set" "5%-"; }
 
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.

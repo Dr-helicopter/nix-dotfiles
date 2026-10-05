@@ -36,6 +36,7 @@ in
 		ffmpeg
 		jq
 		jcal
+		lua
 		asciidoctor
 		CustomWmenu
 		nerd-fonts.mononoki
@@ -50,6 +51,7 @@ in
 		libreoffice
 		zip unzip
 		aria2
+		gost
 		qutebrowser
 		firefox
 		zellij
@@ -179,10 +181,15 @@ home-manager switch --impure --flake "$HOME"/.config/home-manager#"$(uname -n)"
 		enable = true;
 
 		defaultApplications = {
-		"inode/directory" = [ "fff.desktop" ];
+			"x-scheme-handler/http" = [ "org.qutebrowser.qutebrowser.desktop" ];
+			"x-scheme-handler/https" =[ "org.qutebrowser.qutebrowser.desktop" ];
+			"inode/directory" = [ "fff.desktop" ];
 		};
 	};
 
+	programs.qutebrowser = {
+		#enable = true;
+	};
 
 	programs.mpv = {
 		enable=true;

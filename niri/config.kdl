@@ -350,6 +350,10 @@ binds {
     Mod+Shift+B	{ spawn "firefox"; }
     Mod+Space	{ spawn "menu"; }
 
+    Mod+L		{ spawn "todo"; }
+    Mod+P		{ spawn "torctl"; }
+
+
     Mod+Q repeat=false { close-window; }
 
     Mod+W { focus-window-up;}
@@ -424,7 +428,6 @@ binds {
     Mod+Alt+Shift+W { move-window-up-or-to-workspace-up; }
 
     Mod+H		{ focus-column-first; }
-    Mod+L		{ spawn "todo"; }
     Mod+Shift+H	{ move-column-to-first; }
     Mod+Shift+L	{ move-column-to-last; }
 

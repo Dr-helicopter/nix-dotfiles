@@ -49,7 +49,7 @@ in
 		obs-studio
 		gimp
 		libreoffice
-		zip unzip
+		zip unzip p7zip unrar
 		aria2
 		gost
 		qutebrowser
@@ -61,11 +61,10 @@ in
 
 	imports = [
 		./niri
+		./scripts.nix
 	];
 
 	home.file = {
-		".config/ls_color.sh".source = ./shell/ls_color.sh;
-		".config/ffff/config.sh".source = ./shell/ffff_config.sh;
 		".config/color_scheme".text = ''
 			BG_PRIME=${theme.bg}
 			TEXT_PRIME=${theme.fg}
@@ -79,31 +78,13 @@ in
 			COLOR6=${theme.c6}
 			COLOR7=${theme.c7}
 		'';
-		"scripts/open.sh".source = ./shell/open.sh;
-		"scripts/menu".source = ./shell/menu;
-
-		"programs/.generic".text = ''
-			#!/usr/bin/env bash
-
-			exec $(basename "$0")
-		'';
-		
 		".lesskey".text = ''
 			# command
 			w back-line
 			s forw-line
 		'';
 	};
-	home.file."programs/.generic".executable = true;
 
-	home.file."scripts/home-switch.sh" = {
-text = ''
-#!/usr/bin/env bash
-
-home-manager switch --impure --flake "$HOME"/.config/home-manager#"$(uname -n)"
-'';
-		executable = true;
-	};
 
 	# Home Manager can also manage your environment variables through
 	# 'home.sessionVariables'. These will be explicitly sourced when using a
@@ -129,9 +110,6 @@ home-manager switch --impure --flake "$HOME"/.config/home-manager#"$(uname -n)"
 		LUA_SCRIPTS_PATH = "$HOME/scripts/lua";
 	};
 
-	home.sessionPath = [ 
-		"$HOME/scripts"
-	];
 	# Let Home Manager install and manage itself.
 	programs.home-manager.enable = true;
 

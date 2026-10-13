@@ -15,8 +15,18 @@
 			]
 			(builtins.readFile ./config.kdl);
 
-	home.file."scripts/music-workspace-toggle.sh" = {
-		source = ./scripts/music-workspace-toggle.sh;
-		executable = true;
+	home.file = {
+		"scripts/music-workspace-toggle.sh" = {
+			source = ./scripts/music-workspace-toggle.sh;
+			executable = true;
+		};
+		"scripts/setup_wallpaper.sh" = {
+			source = ./scripts/setup_wallpaper.sh;
+			executable = true;
+		};
+		"scripts/random_wallpaper.sh" = {
+			source = ./scripts/random_wallpaper.sh;
+			executable = true;
+		};
 	};
 }

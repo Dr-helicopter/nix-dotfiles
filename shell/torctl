@@ -1,0 +1,192 @@
+#!/usr/bin/env bash
+# torctl - wmenu front-end for Tor + gost relays
+# Deps: tor, wmenu, gost, curl, iproute2 (ip, ss). Optional: jq, libnotify (notify-send)
+
+# to exit if ran twiced
+if pgrep -x wmenu; then
+	pkill wmenu
+	exit 0
+fi
+
+set -u
+
+TORRC="${TORRC:-$HOME/.local/share/torrc}"       # your torrc
+TOR_SOCKS="${TOR_SOCKS:-127.0.0.1:9050}"        # must match SocksPort in torrc
+STATE="${XDG_STATE_HOME:-$HOME/.local/state}/torctl"
+TOR_PID="$STATE/tor.pid"
+TOR_LOG="$STATE/tor.log"
+last_check=""
+mkdir -p "$STATE"
+
+[[ -f ~/.config/color_scheme ]] && source ~/.config/color_scheme
+
+menu() { 
+	wmenu -c -i \
+	--bw 1 \
+	-N $BG_PRIME \
+	-S $COLOR4 \
+	-l 12 "$@"  
+}
+
+msg() {
+  if command -v notify-send >/dev/null; then
+    notify-send -a torctl "$1" "${2:-}"
+  else
+    echo "$1 ${2:-}" >&2
+  fi
+}
+
+alive() { [[ -f $1 ]] && kill -0 "$(head -n1 "$1")" 2>/dev/null; }
+
+port_busy() { ss -ltnH "sport = :$1" | grep -q .; }
+
+# ---------- Tor ----------
+
+tor_start() {
+  alive "$TOR_PID" && return 0
+  [[ -f $TORRC ]] || { msg "torctl" "torrc not found: $TORRC"; return 1; }
+  : >"$TOR_LOG"
+  setsid -f bash -c 'echo $$ >"$1"; exec tor -f "$2" >"$3" 2>&1' _ "$TOR_PID" "$TORRC" "$TOR_LOG"
+  msg "Tor" "Starting, waiting for circuit..."
+  local i
+  for i in $(seq 1 90); do
+    alive "$TOR_PID" || { msg "Tor" "Exited early, see $TOR_LOG"; return 1; }
+    if ss -ltnH "sport = :${TOR_SOCKS##*:}" | grep -q . &&
+       curl -s -m 5 --socks5-hostname "$TOR_SOCKS" https://check.torproject.org/api/ip 2>/dev/null | grep -q '"IsTor":true'; then
+      msg "Tor" "Connected"
+      return 0
+    fi
+    sleep 1
+  done
+  msg "Tor" "Started but no working circuit after 90s"
+  return 1
+}
+
+tor_stop() {
+  expose_stop_all
+  if alive "$TOR_PID"; then
+    kill "$(head -n1 "$TOR_PID")" 2>/dev/null
+  fi
+  rm -f "$TOR_PID"
+  msg "Tor" "Stopped"
+}
+
+tor_test() {
+  if ! alive "$TOR_PID"; then 
+	  msg "Tor test" "Tor is not running"
+	  last_check="tor not running"
+	  return 
+  fi
+  local out ip
+  out=$(curl -sS -m 20 --socks5-hostname "$TOR_SOCKS" https://check.torproject.org/api/ip 2>&1) \
+    || { msg "Tor test: FAILED" "$out"; return; }
+  if command -v jq >/dev/null; then
+    ip=$(jq -r '.IP' <<<"$out"); is=$(jq -r '.IsTor' <<<"$out")
+  else
+    ip=$(grep -o '"IP":"[^"]*"' <<<"$out" | cut -d'"' -f4)
+    is=$(grep -o '"IsTor":[a-z]*' <<<"$out" | cut -d: -f2)
+  fi
+
+  if [[ $is == true ]]; then
+    msg "Tor test: OK" "Exit IP: $ip"
+	last_check=" lst chk: OK $ip "
+  else
+    msg "Tor test: reachable but NOT Tor" "IP: $ip"
+	last_check=" lst chk: not tor $ip "
+  fi
+}
+
+# ---------- Exposed relays ----------
+# state file: $STATE/x.<proto>.<port>  ->  line1: pid, line2: bind
+
+pick_bind() {
+  {
+    echo "127.0.0.1  (this machine only)"
+    ip -4 -o addr show scope global | awk '{split($4,a,"/"); print a[1]"  ("$2")"}'
+    echo "0.0.0.0  (all interfaces / whole LAN)"
+  } | menu -p "bind to" | awk '{print $1}'
+}
+
+expose_start() {   # $1 = socks | http
+  alive "$TOR_PID" || { msg "torctl" "Start Tor first"; return; }
+  command -v gost >/dev/null || { msg "torctl" "gost not installed"; return; }
+  local proto=$1 def bind port scheme f
+  [[ $proto == socks ]] && { def=1080; scheme=socks5; } || { def=8118; scheme=http; }
+
+  bind=$(pick_bind) || return
+  [[ -n $bind ]] || return
+  port=$(menu -p "$proto port [$def]" </dev/null) || return
+  port=${port:-$def}
+  [[ $port =~ ^[0-9]+$ ]] || { msg "torctl" "Invalid port: $port"; return; }
+  port_busy "$port" && { msg "torctl" "Port $port already in use"; return; }
+
+  f="$STATE/x.$proto.$port"
+  setsid -f bash -c 'echo $$ >"$1"; echo "$2" >>"$1"; shift 2; exec "$@"' _ "$f" "$bind" \
+    gost -L "$scheme://$bind:$port" -F "socks5://$TOR_SOCKS" >"$STATE/gost.$proto.$port.log" 2>&1
+  sleep 0.7
+  if alive "$f" && port_busy "$port"; then
+    msg "Exposed $scheme" "$bind:$port"
+  else
+    msg "gost failed" "$(tail -n 3 "$STATE/gost.$proto.$port.log" 2>/dev/null)"
+    rm -f "$f"
+  fi
+}
+
+expose_stop() {    # $1 = state file
+  alive "$1" && kill "$(head -n1 "$1")" 2>/dev/null
+  rm -f "$1"
+}
+
+expose_stop_all() {
+  local f
+  for f in "$STATE"/x.*; do [[ -e $f ]] && expose_stop "$f"; done
+}
+
+# ---------- Main menu ----------
+
+main() {
+  local f proto port bind label choice entries
+  while :; do
+    entries=()
+    if alive "$TOR_PID"; then
+      entries+=(
+		  "● Tor is ON  - turn off" 
+		  "Test connectivity ${last_check}" 
+		  "Expose SOCKS5 relay" "Expose HTTP relay"
+	  )
+    else
+      entries+=("○ Tor is OFF - turn on")
+    fi
+
+    declare -A map=()
+    for f in "$STATE"/x.*; do
+      [[ -e $f ]] || continue
+      if ! alive "$f"; then rm -f "$f"; continue; fi
+      proto=$(cut -d. -f2 <<<"${f##*/}"); port=${f##*.}; bind=$(sed -n 2p "$f")
+      label="✕ stop $proto $bind:$port"
+      entries+=("$label"); map["$label"]=$f
+    done
+    (( ${#map[@]} > 1 )) && entries+=("✕ stop all relays")
+
+    choice=$(printf '%s\n' "${entries[@]}" | menu -p "torctl") || exit 0
+    case "$choice" in
+      *"turn off")            tor_stop ;;
+      *"turn on")             tor_start ;;
+      "Test connectivity"*)    tor_test ;;
+      "Expose SOCKS5"*)       expose_start socks ;;
+      "Expose HTTP"*)         expose_start http ;;
+      "✕ stop all relays")    expose_stop_all ;;
+      "✕ stop "*)             expose_stop "${map[$choice]}" ;;
+    esac
+    unset map
+  done
+}
+
+# CLI shortcuts for keybinds/scripts: torctl on|off|test
+case "${1:-}" in
+  on)   tor_start ;;
+  off)  tor_stop ;;
+  test) tor_test ;;
+  "")   main ;;
+  *)    echo "usage: torctl [on|off|test]" >&2; exit 1 ;;
+esac

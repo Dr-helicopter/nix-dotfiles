@@ -39,7 +39,7 @@
 			executable = true;
 		};
 
-		".config/quickshell.shell.qml" = {
+		".config/quickshell/shell.qml" = {
 			source = ./quickshell/shell.qml;
 		};
 	};

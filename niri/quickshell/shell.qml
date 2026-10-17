@@ -80,7 +80,7 @@ Scope {
         anchors.right: !isLeft
 
         // Stable Wayland surface; only the shape animates.
-        implicitWidth: 600
+        implicitWidth: 800
         implicitHeight: 20
 
         exclusionMode: ExclusionMode.Ignore

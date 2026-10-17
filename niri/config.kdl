@@ -11,7 +11,7 @@ workspace "1"
 workspace "2"
 workspace "3"
 workspace "4"
-workspace "tlgrm" 
+workspace "telegram" 
 workspace "6"
 workspace "7"
 workspace "8"
@@ -263,6 +263,8 @@ layout {
 // This line starts waybar, a commonly used bar for Wayland compositors.
 //spawn-at-startup "waybar"
 
+spawn-at-startup "quickshell-setup.sh" 
+spawn-sh-at-startup "qshell-daemons-setup.sh"
 spawn-at-startup "sh" "-c" "~/scripts/setup_wallpaper.sh" 
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
@@ -331,7 +333,7 @@ window-rule {
 
 window-rule {
     match app-id="^com.ayugram.desktop$"
-    open-on-workspace "tlgrm"
+    open-on-workspace "telegram"
 }
 
 binds {

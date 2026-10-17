@@ -28,8 +28,7 @@ in
 	home.stateVersion = "26.05"; # Please read the comment before changing.
 
 	home.packages = with pkgs;[
-		niri
-		swaybg
+
 		btop
 		moreutils
 		alsa-utils
@@ -40,6 +39,9 @@ in
 		asciidoctor
 		CustomWmenu
 		nerd-fonts.mononoki
+		nerd-fonts._3270
+		nerd-fonts.terminess-ttf
+		nerd-fonts.shure-tech-mono
 		ayugram-desktop
 		godot
 		fastfetch
@@ -77,6 +79,16 @@ in
 			COLOR5=${theme.c5}
 			COLOR6=${theme.c6}
 			COLOR7=${theme.c7}
+
+			COLOR7=${theme.c7}
+			COLOR8=${theme.c8}
+			COLOR9=${theme.c9}
+			COLOR10=${theme.c10}
+			COLOR11=${theme.c11}
+			COLOR12=${theme.c12}
+			COLOR13=${theme.c13}
+			COLOR14=${theme.c14}
+
 		'';
 		".lesskey".text = ''
 			# command
@@ -112,6 +124,14 @@ in
 
 	# Let Home Manager install and manage itself.
 	programs.home-manager.enable = true;
+
+	fonts.fontconfig.enable = true;
+	
+	programs.git.settings = {
+		user.name = "Dr-helicopter";
+		user.email = "hashmya1@gmail.com";
+	};
+
 
 	programs.zsh = {
 		enable = true;

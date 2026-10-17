@@ -1,6 +1,12 @@
-{ theme, ... }: {
+{ pkgs, theme, ... }: {
 	wayland.windowManager.niri.enable = true;
 
+	home.packages = with pkgs;[
+		
+	    quickshell
+		swaybg
+		niri
+	];
 	home.file.".config/niri/config.kdl".text =
 		builtins.replaceStrings
 			[
@@ -27,6 +33,14 @@
 		"scripts/random_wallpaper.sh" = {
 			source = ./scripts/random_wallpaper.sh;
 			executable = true;
+		};
+		"scripts/quickshell-setup.sh" = {
+			source = ./scripts/quickshell-setup.sh;
+			executable = true;
+		};
+
+		".config/quickshell.shell.qml" = {
+			source = ./quickshell/shell.qml;
 		};
 	};
 }

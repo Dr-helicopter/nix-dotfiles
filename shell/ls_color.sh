@@ -1,5 +1,6 @@
 
-export LS_COLORS='di=00;94:*.pdf=0;90;43:*.cbz=1;90;43:*.jpg=0;31;43:*.zip=1;30;100:*.xz=1;30;100'
+export LS_COLORS='di=00;94:*.pdf=0;90;43:*.cbz=1;90;43:*.jpg=0;31;43:*.png=0;30;43:*.zip=1;30;100:*.xz=1;30;100'
+
 if [[ $TERM = 'linux' ]]; then
 	ls_video_col='0;101;44'
 	ls_audio_col='1;37;46'

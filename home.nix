@@ -63,6 +63,7 @@ in
 
 	imports = [
 		./niri
+		./moduals/wayland-screenshot.nix
 		./scripts.nix
 	];
 
@@ -183,10 +184,6 @@ in
 			"x-scheme-handler/https" =[ "org.qutebrowser.qutebrowser.desktop" ];
 			"inode/directory" = [ "fff.desktop" ];
 		};
-	};
-
-	programs.qutebrowser = {
-		#enable = true;
 	};
 
 	programs.mpv = {

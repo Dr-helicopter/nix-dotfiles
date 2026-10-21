@@ -1,9 +1,8 @@
- { pkgs, ...}:
-
+{ pkgs, ... }:
 let
-			grim = "${pkgs.grim}/bin/grim";
-			slurp = "${pkgs.slurp}/bin/slurp";
-			swappy= "${pkgs.swappy}/bin/swappy";
+	grim = "${pkgs.grim}/bin/grim";
+	slurp = "${pkgs.slurp}/bin/slurp";
+	swappy= "${pkgs.swappy}/bin/swappy";
 in 
 {
 	home.packages = [
@@ -20,7 +19,7 @@ in
 				${grim} -g "$(${slurp})" - | ${swappy} -f -
 				;;
 			-f)
-				${grim} - | ${swappy}	-f -
+				${grim} - | ${swappy} -f -
 				;;
 			*)
 				${grim} $save_path/"$(name)"

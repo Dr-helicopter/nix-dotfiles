@@ -63,6 +63,8 @@ in
 
 	imports = [
 		./niri
+		./zsh
+
 		./moduals/wayland-screenshot.nix
 		./scripts.nix
 	];
@@ -98,23 +100,6 @@ in
 		'';
 	};
 
-
-	# Home Manager can also manage your environment variables through
-	# 'home.sessionVariables'. These will be explicitly sourced when using a
-	# shell provided by Home Manager. If you don't want to manage your shell
-	# through Home Manager then you have to manually source 'hm-session-vars.sh'
-	# located at either
-	#
-	#	~/.nix-profile/etc/profile.d/hm-session-vars.sh
-	#
-	# or
-	#
-	#	~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-	#
-	# or
-	#
-	#	/etc/profiles/per-user/helic/etc/profile.d/hm-session-vars.sh
-	#
 	home.sessionVariables = {
 		EDITOR = "nvim";
 		SUDO_EDITOR = "nvim";
@@ -133,38 +118,6 @@ in
 		user.email = "hashmya1@gmail.com";
 	};
 
-
-	programs.zsh = {
-		enable = true;
-		autosuggestion.enable = true;
-		shellAliases = {
-			x = "~/scripts/open.sh";
-			rsca = "rsync -carv --progress";
-		};
-
-		setOptions = [
-			"EXTENDED_GLOB"
-		];
-
-		initContent = ''
-			# If not running interactively, don't do anything
-			[[ $- != *i* ]] && return
-
-			export HISTFILE=~/.shell_history
-			export HISTSIZE=10000
-			export SAVEHIST=10000
-			export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=$zsh_suggestion_col",bg=0"
-
-			source ~/.config/ls_color.sh
-			source ~/.config/zsh/prompt.zsh
-			source ~/.config/zsh/fff.setup.sh
-			source ~/.config/zsh/commands.sh
-			source ~/.config/zsh/keybindings.sh
-			[[ -f "$HOME/.zshrc_local" ]] && source "$HOME/.zshrc_local"
-		'';
-	};
-	home.file.".config/zsh".source = ./zsh;
-
 	xdg.desktopEntries.fff = {
 		name = "fff";
 		comment = "Terminal file manager";
@@ -174,6 +127,7 @@ in
 		noDisplay = true;
 		mimeType = [ "inode/directory" ];
 	};
+
 
 	xdg.configFile."mimeapps.list".force = true;
 	xdg.mimeApps = {

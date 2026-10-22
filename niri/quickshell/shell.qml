@@ -1,4 +1,3 @@
-
 import Quickshell
 import Quickshell.Wayland
 import Quickshell.Io
@@ -10,51 +9,101 @@ Scope {
         precision: SystemClock.Seconds
     }
 
+	// Clock component
     PanelWindow {
-        anchors.top: true
-        implicitWidth: 170
-        implicitHeight: 20
+		anchors.top: true
+			implicitHeight: 6
 
-        exclusionMode: ExclusionMode.Ignore
-        color: "transparent"
+		color: "transparent"
 
-        Canvas {
-            id: top_clock
-            anchors.fill: parent
+		CornerPanel { 
+			corner: "tr" 
+			anchors {
+				left: true
+				top: true
+			}
 
-            onPaint: {
-                const ctx = getContext("2d")
-                ctx.clearRect(0, 0, width, height)
+			input_tag: "cl"
 
-                ctx.fillStyle = "#000000"
-                ctx.beginPath()
-                ctx.moveTo(0, 0)
-                ctx.lineTo(width, 0)
-                ctx.lineTo(width - 20, height)
-                ctx.lineTo(20, height)
-                ctx.closePath()
-                ctx.fill()
+			margins.left: 105
 
-                ctx.beginPath()
-                ctx.moveTo(0, 0)
-                ctx.lineTo(20, height)
-                ctx.lineTo(width - 20, height)
-                ctx.lineTo(width, 0)
+			Text {
+				color: "#13c299"
+				font.pixelSize: 20
+				font.bold: true
+				font.family: "Terminess Nerd Font"
+			}	
+		}
 
-                ctx.strokeStyle = "#13c299"
-                ctx.lineWidth = 5
-                ctx.stroke()
-            }
-        }
+		CornerPanel { 
+			corner: "tl" 
 
-        Text {
-            anchors.centerIn: parent
-            text: Qt.formatDateTime(clock.date, "HH:mm:ss")
-            color: "#13c299"
-            font.pixelSize: 20
-            font.bold: true
-            font.family: "Terminess Nerd Font"
-        }
+			anchors {
+				right: true
+				top: true
+			}
+
+			input_tag: "cr"
+
+			margins {
+				right: 105
+			}
+			Text {
+				color: "#13c299"
+				font.pixelSize: 20
+				font.bold: true
+				font.family: "Terminess Nerd Font"
+			}	
+		}
+
+
+		PanelWindow {
+			anchors.top: true
+			implicitWidth: 170
+			implicitHeight: 26
+
+			exclusionMode: ExclusionMode.Ignore
+			color: "transparent"
+			Canvas {
+				id: top_clock
+				anchors.fill: parent
+
+				onPaint: {
+					const ctx = getContext("2d")
+					ctx.clearRect(0, 0, width, height)
+
+					ctx.fillStyle = "#000000"
+					ctx.beginPath()
+					ctx.moveTo(0, 0)
+					ctx.lineTo(width, 0)
+					ctx.lineTo(width - 26, height)
+					ctx.lineTo(26, height)
+					ctx.closePath()
+					ctx.fill()
+
+					ctx.beginPath()
+					ctx.moveTo(0, 0)
+					ctx.lineTo(26, height)
+					ctx.lineTo(width - 26, height)
+					ctx.lineTo(width, 0)
+
+					ctx.strokeStyle = "#13c299"
+					ctx.lineWidth = 5
+					ctx.stroke()
+				}
+			}
+
+			Text {
+				anchors.centerIn: parent
+				text: Qt.formatDateTime(clock.date, "HH:mm:ss")
+				color: "#13c299"
+				font.pixelSize: 20
+				font.bold: true
+				font.family: "Terminess Nerd Font"
+
+			
+			}
+		}
     }
 
     // Generic, file-driven corner component.
@@ -62,6 +111,8 @@ Scope {
         id: cornerPanel
 
         required property string corner
+		property string input_tag
+
 
         readonly property bool isTop: corner.startsWith("t")
         readonly property bool isLeft: corner.endsWith("l")
@@ -74,10 +125,7 @@ Scope {
         readonly property real targetWidth:
             Math.max(20, cornerText.implicitWidth + 28)
 
-        anchors.top: isTop
-        anchors.bottom: !isTop
-        anchors.left: isLeft
-        anchors.right: !isLeft
+		readonly property string file_tag: input_tag ? input_tag : corner
 
         // Stable Wayland surface; only the shape animates.
         implicitWidth: 800
@@ -88,7 +136,7 @@ Scope {
 
         FileView {
             id: textFile
-            path: "/dev/shm/qshell/" + cornerPanel.corner + "-text"
+            path: "/dev/shm/qshell/" + cornerPanel.file_tag + "-text"
             watchChanges: true
             printErrors: true
 
@@ -227,8 +275,24 @@ Scope {
         }
     }
 
-    CornerPanel { corner: "tl" }
-    CornerPanel { corner: "tr" }
-    CornerPanel { corner: "bl" }
-    CornerPanel { corner: "br" }
+	CornerPanel { 
+		corner: "tl" 
+        anchors.top: true
+		anchors.left: true
+	}
+	CornerPanel { 
+		corner: "tr" 
+        anchors.top: true
+        anchors.right: true
+	}
+	CornerPanel { 
+		corner: "bl" 
+        anchors.bottom: true
+		anchors.left: true
+	}
+	CornerPanel { 
+		corner: "br" 
+        anchors.bottom: true
+        anchors.right: true
+	}
 }

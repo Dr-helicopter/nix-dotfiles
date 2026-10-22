@@ -18,7 +18,7 @@ open_file() {
 	
 
 	case "${ext,,}" in
-	cbz|pdf)
+	epub|cbz|pdf)
 		zathura				"$file" ;;
 
 	mp3|m4a|wav|flac)

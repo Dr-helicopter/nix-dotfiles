@@ -1,30 +1,34 @@
 { pkgs, ... }:
-let
-	grim = "${pkgs.grim}/bin/grim";
-	slurp = "${pkgs.slurp}/bin/slurp";
-	swappy= "${pkgs.swappy}/bin/swappy";
-in 
+
 {
 	home.packages = [
-		(pkgs.writeShellScriptBin "wayland-screenshot.sh" ''
-		save_path=~/Pictures/Screenshots
+		(pkgs.writeShellApplication {
+			name = "wayland-screenshot.sh";
 
-		name() {
-			date +"%G.%m.%d-%a-%R:%S.grimshot.png"
-		}
+			runtimeInputs = [
+				pkgs.grim
+				pkgs.slurp
+				pkgs.swappy
+			];
 
-		case $1
-		in
-			-s)
-				${grim} -g "$(${slurp})" - | ${swappy} -f -
-				;;
-			-f)
-				${grim} - | ${swappy} -f -
-				;;
-			*)
-				${grim} $save_path/"$(name)"
-				 ;;
-		esac
-		'')
+			text = ''
+				save_path="$HOME/Pictures/Screenshots"
+				filename="$(date +'%Y.%m.%d-%a-%R:%S.grimshot.png')"
+
+				case "''${1:-}" in
+					-s)
+						grim -g "$(slurp)" - | swappy -f -
+						;;
+					-f)
+						grim - | swappy -f -
+						;;
+					*)
+						mkdir -p "$save_path"
+						grim "$save_path/$filename"
+						;;
+				esac
+			'';
+		})
 	];
 }
+

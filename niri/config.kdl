@@ -264,7 +264,7 @@ layout {
 //spawn-at-startup "waybar"
 
 spawn-at-startup "quickshell-setup.sh" 
-spawn-sh-at-startup "qshell-daemons-setup.sh"
+spawn-sh-at-startup "~/.config/niri/daemon-setup.sh"
 spawn-at-startup "sh" "-c" "~/scripts/setup_wallpaper.sh" 
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:

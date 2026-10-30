@@ -1,14 +1,6 @@
 { config, pkgs, nixgl, lib, machine, theme, ... }:
 
 let
-	CustomWmenu = pkgs.wmenu.overrideAttrs (oldAttrs: {
-			src = pkgs.fetchFromGitHub {
-			owner = "Dr-helicopter";
-			repo = "wmenu";
-			rev = "main";
-			hash = "sha256-bUr4AyxCLygOcWe37UALmEsnI1ADsbjRiejb5ZqRekE=";
-		};
-	});
 	foot-font-size = 
 		if machine == "nixman" then "15"
 		else "10";
@@ -28,7 +20,6 @@ in
 	home.stateVersion = "26.05"; # Please read the comment before changing.
 
 	home.packages = with pkgs;[
-
 		btop
 		moreutils
 		alsa-utils
@@ -36,21 +27,20 @@ in
 		jq
 		jcal
 		lua
-		asciidoctor
-		CustomWmenu
+	#	CustomWmenu
+		wmenu
+
 		nerd-fonts.mononoki
-		nerd-fonts._3270
 		nerd-fonts.terminess-ttf
-		nerd-fonts.shure-tech-mono
 		ayugram-desktop
 		godot
 		fastfetch
 		sshfs
 		neovim-remote
-		newsboat
+#		newsboat
 		obs-studio
 		gimp
-		libreoffice
+#		libreoffice
 		zip unzip p7zip unrar
 		aria2
 		gost
@@ -59,6 +49,12 @@ in
 		zellij
 	];
  
+
+	services.dunst.enable = true;
+	services.dunst.settings.capture-to-qshell = {
+	  script = "${config.home.homeDirectory}/.config/dunst/hook.sh";
+	  format = "";
+	};
 
 
 	imports = [
@@ -113,9 +109,12 @@ in
 
 	fonts.fontconfig.enable = true;
 	
-	programs.git.settings = {
-		user.name = "Dr-helicopter";
-		user.email = "hashmya1@gmail.com";
+	programs.git = {
+		enable = true;
+		settings = {
+			user.name = "Dr-helicopter";
+			user.email = "hashmya1@gmail.com";
+		};
 	};
 
 	xdg.desktopEntries.fff = {
@@ -134,9 +133,9 @@ in
 		enable = true;
 
 		defaultApplications = {
-			"x-scheme-handler/http" = [ "org.qutebrowser.qutebrowser.desktop" ];
-			"x-scheme-handler/https" =[ "org.qutebrowser.qutebrowser.desktop" ];
-			"inode/directory" = [ "fff.desktop" ];
+			"x-scheme-handler/http" =	[ "org.qutebrowser.qutebrowser.desktop" ];
+			"x-scheme-handler/https" =	[ "org.qutebrowser.qutebrowser.desktop" ];
+			"inode/directory" =			[ "fff.desktop" ];
 		};
 	};
 

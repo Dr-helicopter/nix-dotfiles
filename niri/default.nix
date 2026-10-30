@@ -2,6 +2,7 @@
 	wayland.windowManager.niri.enable = true;
 
 	home.packages = with pkgs;[
+		inotify-tools
 		
 	    quickshell
 		swaybg
@@ -40,5 +41,7 @@
 		};
 
 		".config/quickshell/shell.qml".source = ./quickshell/shell.qml;
+		".config/niri/daemon-setup.sh".source = ./scripts/daemon-setup.sh;
+		".config/niri/daemons/.stub".text = "";
 	};
 }

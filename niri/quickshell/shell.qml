@@ -28,7 +28,7 @@ Scope {
 			margins.left: 105
 
 			Text {
-				color: "#13c299"
+				color: "#24dfc4"
 				font.pixelSize: 20
 				font.bold: true
 				font.family: "Terminess Nerd Font"
@@ -49,7 +49,7 @@ Scope {
 				right: 105
 			}
 			Text {
-				color: "#13c299"
+				color: "#24dfc4"
 				font.pixelSize: 20
 				font.bold: true
 				font.family: "Terminess Nerd Font"
@@ -87,7 +87,7 @@ Scope {
 					ctx.lineTo(width - 26, height)
 					ctx.lineTo(width, 0)
 
-					ctx.strokeStyle = "#13c299"
+					ctx.strokeStyle = "#24dfc4"
 					ctx.lineWidth = 5
 					ctx.stroke()
 				}
@@ -145,7 +145,7 @@ Scope {
 
         FileView {
             id: colorFile
-            path: "/dev/shm/qshell/" + cornerPanel.corner + "-color"
+			path: "/dev/shm/qshell/" + cornerPanel.file_tag + "-color"
             watchChanges: true
             printErrors: true
 

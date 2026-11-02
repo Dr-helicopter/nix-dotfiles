@@ -1,4 +1,5 @@
 {
+  inputs,
   config,
   pkgs,
   nixgl,
@@ -56,6 +57,7 @@ in
     zellij
 
     nixfmt-rfc-style
+    nixd
   ];
 
   services.dunst.enable = true;

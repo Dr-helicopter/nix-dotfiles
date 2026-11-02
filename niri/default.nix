@@ -1,47 +1,47 @@
 { pkgs, theme, ... }: {
-	wayland.windowManager.niri.enable = true;
+  wayland.windowManager.niri.enable = true;
 
-	home.packages = with pkgs;[
-		inotify-tools
-		
-	    quickshell
-		swaybg
-		niri
-	];
-	home.file.".config/niri/config.kdl".text =
-		builtins.replaceStrings
-			[
-			  "\${theme.c14}"
-			  "\${theme.c4}"
-			  "\${theme.c1}"
-			]
-			[
-			  theme.c14
-			  theme.c4
-			  theme.c1
-			]
-			(builtins.readFile ./config.kdl);
+  home.packages = with pkgs; [
+    inotify-tools
 
-	home.file = {
-		"scripts/music-workspace-toggle.sh" = {
-			source = ./scripts/music-workspace-toggle.sh;
-			executable = true;
-		};
-		"scripts/setup_wallpaper.sh" = {
-			source = ./scripts/setup_wallpaper.sh;
-			executable = true;
-		};
-		"scripts/random_wallpaper.sh" = {
-			source = ./scripts/random_wallpaper.sh;
-			executable = true;
-		};
-		"scripts/quickshell-setup.sh" = {
-			source = ./scripts/quickshell-setup.sh;
-			executable = true;
-		};
+    quickshell
+    swaybg
+    niri
+  ];
+  home.file.".config/niri/config.kdl".text =
+    builtins.replaceStrings
+      [
+        "\${theme.c14}"
+        "\${theme.c4}"
+        "\${theme.c1}"
+      ]
+      [
+        theme.c14
+        theme.c4
+        theme.c1
+      ]
+      (builtins.readFile ./config.kdl);
 
-		".config/quickshell/shell.qml".source = ./quickshell/shell.qml;
-		".config/niri/daemon-setup.sh".source = ./scripts/daemon-setup.sh;
-		".config/niri/daemons/.stub".text = "";
-	};
+  home.file = {
+    "scripts/music-workspace-toggle.sh" = {
+      source = ./scripts/music-workspace-toggle.sh;
+      executable = true;
+    };
+    "scripts/setup_wallpaper.sh" = {
+      source = ./scripts/setup_wallpaper.sh;
+      executable = true;
+    };
+    "scripts/random_wallpaper.sh" = {
+      source = ./scripts/random_wallpaper.sh;
+      executable = true;
+    };
+    "scripts/quickshell-setup.sh" = {
+      source = ./scripts/quickshell-setup.sh;
+      executable = true;
+    };
+
+    ".config/quickshell/shell.qml".source = ./quickshell/shell.qml;
+    ".config/niri/daemon-setup.sh".source = ./scripts/daemon-setup.sh;
+    ".config/niri/daemons/.stub".text = "";
+  };
 }

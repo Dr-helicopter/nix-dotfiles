@@ -1,238 +1,245 @@
-{ config, pkgs, nixgl, lib, machine, theme, ... }:
+{
+  config,
+  pkgs,
+  nixgl,
+  lib,
+  machine,
+  theme,
+  ...
+}:
 
 let
-	foot-font-size = 
-		if machine == "nixman" then "15"
-		else "10";
+  foot-font-size = if machine == "nixman" then "15" else "10";
 in
 {
-	home.username = "helic";
-	home.homeDirectory = "/home/helic";
+  home.username = "helic";
+  home.homeDirectory = "/home/helic";
 
+  # This value determines the Home Manager release that your configuration is
+  # compatible with. This helps avoid breakage when a new Home Manager release
+  # introduces backwards incompatible changes.
+  #
+  # You should not change this value, even if you update Home Manager. If you do
+  # want to update the value, then make sure to first check the Home Manager
+  # release notes.
+  home.stateVersion = "26.05";
 
-	# This value determines the Home Manager release that your configuration is
-	# compatible with. This helps avoid breakage when a new Home Manager release
-	# introduces backwards incompatible changes.
-	#
-	# You should not change this value, even if you update Home Manager. If you do
-	# want to update the value, then make sure to first check the Home Manager
-	# release notes.
-	home.stateVersion = "26.05"; # Please read the comment before changing.
+  home.packages = with pkgs; [
+    btop
+    moreutils
+    alsa-utils
+    ffmpeg
+    jq
+    jcal
+    lua
+    wmenu
 
-	home.packages = with pkgs;[
-		btop
-		moreutils
-		alsa-utils
-		ffmpeg
-		jq
-		jcal
-		lua
-	#	CustomWmenu
-		wmenu
+    nerd-fonts.mononoki
+    nerd-fonts.terminess-ttf
+    ayugram-desktop
+    godot
+    fastfetch
+    sshfs
+    neovim-remote
+    #newsboat
+    obs-studio
+    gimp
+    libreoffice
+    zip
+    unzip
+    p7zip
+    unrar
+    aria2
+    gost
+    qutebrowser
+    firefox
+    zellij
 
-		nerd-fonts.mononoki
-		nerd-fonts.terminess-ttf
-		ayugram-desktop
-		godot
-		fastfetch
-		sshfs
-		neovim-remote
-#		newsboat
-		obs-studio
-		gimp
-#		libreoffice
-		zip unzip p7zip unrar
-		aria2
-		gost
-		qutebrowser
-		firefox
-		zellij
-	];
- 
+    nixfmt-rfc-style
+  ];
 
-	services.dunst.enable = true;
-	services.dunst.settings.capture-to-qshell = {
-	  script = "${config.home.homeDirectory}/.config/dunst/hook.sh";
-	  format = "";
-	};
+  services.dunst.enable = true;
+  services.dunst.settings.capture-to-qshell = {
+    script = "${config.home.homeDirectory}/.config/dunst/hook.sh";
+    format = "";
+  };
 
+  imports = [
+    ./niri
+    ./zsh
 
-	imports = [
-		./niri
-		./zsh
+    ./moduals/wayland-screenshot.nix
+    #./moduals/unity.nix
+    ./scripts.nix
+  ];
 
-		./moduals/wayland-screenshot.nix
-		./scripts.nix
-	];
+  home.file = {
+    ".config/color_scheme".text = ''
+      BG_PRIME=${theme.bg}
+      TEXT_PRIME=${theme.fg}
 
-	home.file = {
-		".config/color_scheme".text = ''
-			BG_PRIME=${theme.bg}
-			TEXT_PRIME=${theme.fg}
-			
-			COLOR0=${theme.c0}
-			COLOR1=${theme.c1}
-			COLOR2=${theme.c2}
-			COLOR3=${theme.c3}
-			COLOR4=${theme.c4}
-			COLOR5=${theme.c5}
-			COLOR6=${theme.c6}
-			COLOR7=${theme.c7}
+      COLOR0=${theme.c0}
+      COLOR1=${theme.c1}
+      COLOR2=${theme.c2}
+      COLOR3=${theme.c3}
+      COLOR4=${theme.c4}
+      COLOR5=${theme.c5}
+      COLOR6=${theme.c6}
+      COLOR7=${theme.c7}
 
-			COLOR7=${theme.c7}
-			COLOR8=${theme.c8}
-			COLOR9=${theme.c9}
-			COLOR10=${theme.c10}
-			COLOR11=${theme.c11}
-			COLOR12=${theme.c12}
-			COLOR13=${theme.c13}
-			COLOR14=${theme.c14}
+      COLOR7=${theme.c7}
+      COLOR8=${theme.c8}
+      COLOR9=${theme.c9}
+      COLOR10=${theme.c10}
+      COLOR11=${theme.c11}
+      COLOR12=${theme.c12}
+      COLOR13=${theme.c13}
+      COLOR14=${theme.c14}
 
-		'';
-		".lesskey".text = ''
-			# command
-			w back-line
-			s forw-line
-		'';
-	};
+    '';
+    ".lesskey".text = ''
+      # command
+      w back-line
+      s forw-line
+    '';
+  };
 
-	home.sessionVariables = {
-		EDITOR = "nvim";
-		SUDO_EDITOR = "nvim";
-		MANPAGER = "nvim +Man!";
-		SCRIPTS_PATH = "$HOME/scripts";
-		LUA_SCRIPTS_PATH = "$HOME/scripts/lua";
-	};
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    SUDO_EDITOR = "nvim";
+    MANPAGER = "nvim +Man!";
+    SCRIPTS_PATH = "$HOME/scripts";
+    LUA_SCRIPTS_PATH = "$HOME/scripts/lua";
+  };
 
-	# Let Home Manager install and manage itself.
-	programs.home-manager.enable = true;
+  # Let Home Manager install and manage itself.
+  programs.home-manager.enable = true;
 
-	fonts.fontconfig.enable = true;
-	
-	programs.git = {
-		enable = true;
-		settings = {
-			user.name = "Dr-helicopter";
-			user.email = "hashmya1@gmail.com";
-		};
-	};
+  fonts.fontconfig.enable = true;
 
-	xdg.desktopEntries.fff = {
-		name = "fff";
-		comment = "Terminal file manager";
-		exec = "${pkgs.foot}/bin/foot fff %f";
-		terminal = false;
-		type = "Application";
-		noDisplay = true;
-		mimeType = [ "inode/directory" ];
-	};
+  programs.git = {
+    enable = true;
+    settings = {
+      user.name = "Dr-helicopter";
+      user.email = "hashmya1@gmail.com";
+    };
+  };
 
+  xdg.desktopEntries.fff = {
+    name = "fff";
+    comment = "Terminal file manager";
+    exec = "${pkgs.foot}/bin/foot fff %f";
+    terminal = false;
+    type = "Application";
+    noDisplay = true;
+    mimeType = [ "inode/directory" ];
+  };
 
-	xdg.configFile."mimeapps.list".force = true;
-	xdg.mimeApps = {
-		enable = true;
+  xdg.configFile."mimeapps.list".force = true;
+  xdg.mimeApps = {
+    enable = true;
 
-		defaultApplications = {
-			"x-scheme-handler/http" =	[ "org.qutebrowser.qutebrowser.desktop" ];
-			"x-scheme-handler/https" =	[ "org.qutebrowser.qutebrowser.desktop" ];
-			"inode/directory" =			[ "fff.desktop" ];
-		};
-	};
+    defaultApplications = {
+      "x-scheme-handler/http" = [ "org.qutebrowser.qutebrowser.desktop" ];
+      "x-scheme-handler/https" = [ "org.qutebrowser.qutebrowser.desktop" ];
+      "inode/directory" = [ "fff.desktop" ];
+    };
+  };
 
-	programs.mpv = {
-		enable=true;
-		config = {
-			hwdec = "auto-safe";
-			target-colorspace-hint = "no";
+  programs.mpv = {
+    enable = true;
+    config = {
+      hwdec = "auto-safe";
+      target-colorspace-hint = "no";
 
-		};
+    };
 
-		bindings = {
-			"w" = "add volume  2";
-			"s" = "add volume -2";
-			"d" = "seek  1";
-			"a" = "seek -1";
+    bindings = {
+      "w" = "add volume  2";
+      "s" = "add volume -2";
+      "d" = "seek  1";
+      "a" = "seek -1";
 
-			"D" = "seek  60";
-			"A" = "seek -60";
+      "D" = "seek  60";
+      "A" = "seek -60";
 
-			"c" = "cycle audio";
-		};
-	};
+      "c" = "cycle audio";
+    };
+  };
 
-	programs.zathura = {
-		enable = true;
+  programs.zathura = {
+    enable = true;
 
-		mappings = {
-			q = "quit";
+    mappings = {
+      q = "quit";
 
-			D = "toggle_page_mode";
+      D = "toggle_page_mode";
 
-			w = "scroll up";
-			s = "scroll down";
-			a = "scroll left";
-			d = "scroll right";
+      w = "scroll up";
+      s = "scroll down";
+      a = "scroll left";
+      d = "scroll right";
 
-			W = "navigate previous";
-			S = "navigate next";
+      W = "navigate previous";
+      S = "navigate next";
 
-			"<A-w>" = "zoom in";
-			"<A-s>" = "zoom out";
+      "<A-w>" = "zoom in";
+      "<A-s>" = "zoom out";
 
-			"w fullscreen" = "scroll up";
-			"s fullscreen" = "scroll down";
-			"a fullscreen" = "scroll left";
-			"d fullscreen" = "scroll right";
+      "w fullscreen" = "scroll up";
+      "s fullscreen" = "scroll down";
+      "a fullscreen" = "scroll left";
+      "d fullscreen" = "scroll right";
 
-			"W fullscreen" = "navigate previous";
-			"S fullscreen" = "navigate next";
+      "W fullscreen" = "navigate previous";
+      "S fullscreen" = "navigate next";
 
-			"<A-w> fullscreen" = "zoom in";
-			"<A-s> fullscreen" = "zoom out";
-		};
-	};
+      "<A-w> fullscreen" = "zoom in";
+      "<A-s> fullscreen" = "zoom out";
+    };
+  };
 
-	programs.foot = {
-		enable = true;
-		settings = {
-			main = 
-			let
-				font-family = "Mononoki Nerd Font Mono";
-			in
-			{
-				font = "${font-family}:style=Regular:size=${foot-font-size}";
-				font-bold = "${font-family}:style=Bold:size=${foot-font-size}";
-				font-italic = "${font-family}:style=Italic:size=${foot-font-size}";
-				font-bold-italic = "${font-family}:style=BoldItalic:size=${foot-font-size}";
-				dpi-aware = true;
-			};
-			cursor = {
-				style = "block";
-			};
-			colors-dark = {
-				alpha = 1;
-				alpha-mode = "default";
-				background = theme.bg;
-				foreground = theme.fg;
+  programs.foot = {
+    enable = true;
+    settings = {
+      main =
+        let
+          font-family = "Mononoki Nerd Font Mono";
+        in
+        {
+          font = "${font-family}:style=Regular:size=${foot-font-size}";
+          font-bold = "${font-family}:style=Bold:size=${foot-font-size}";
+          font-italic = "${font-family}:style=Italic:size=${foot-font-size}";
+          font-bold-italic = "${font-family}:style=BoldItalic:size=${foot-font-size}";
+          dpi-aware = true;
+        };
+      cursor = {
+        style = "block";
+      };
+      colors-dark = {
+        alpha = 1;
+        alpha-mode = "default";
+        background = theme.bg;
+        foreground = theme.fg;
 
-				regular0 = theme.c0;
-				regular1 = theme.c1;
-				regular2 = theme.c2;
-				regular3 = theme.c3;
-				regular4 = theme.c4;
-				regular5 = theme.c5;
-				regular6 = theme.c6;
-				regular7 = theme.c7;
+        regular0 = theme.c0;
+        regular1 = theme.c1;
+        regular2 = theme.c2;
+        regular3 = theme.c3;
+        regular4 = theme.c4;
+        regular5 = theme.c5;
+        regular6 = theme.c6;
+        regular7 = theme.c7;
 
-				bright0 = theme.c8;
-				bright1 = theme.c9;
-				bright2 = theme.c10;
-				bright3 = theme.c11;
-				bright4 = theme.c12;
-				bright5 = theme.c13;
-				bright6 = theme.c14;
-				bright7 = theme.c15;
-			};
-		};
-	};
+        bright0 = theme.c8;
+        bright1 = theme.c9;
+        bright2 = theme.c10;
+        bright3 = theme.c11;
+        bright4 = theme.c12;
+        bright5 = theme.c13;
+        bright6 = theme.c14;
+        bright7 = theme.c15;
+      };
+    };
+  };
 }

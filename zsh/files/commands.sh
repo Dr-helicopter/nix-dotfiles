@@ -3,7 +3,7 @@
 alias ls='ls -N --color=auto --group-directories-first'
 alias run-help=man
 alias which-command=whence
-alias out='hyprctl dispatch "hl.dsp.exit()"'
+alias out='niri msg action quit'
 alias rr='rm -r'
 alias ee=nvim
 alias sd=sudo

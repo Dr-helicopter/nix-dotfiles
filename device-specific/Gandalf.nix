@@ -1,6 +1,6 @@
 { pkgs, nixgl, ... }:
 {
-	home.packages = with pkgs; [
-		android-tools
-	];
+  home.packages = with pkgs; [
+    android-tools
+  ];
 }

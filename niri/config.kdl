@@ -574,3 +574,7 @@ binds {
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
 }
+
+environment {
+    QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
+}

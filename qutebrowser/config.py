@@ -1,6 +1,10 @@
 import keybindings
 import tables
 
+import subprocess
+from qutebrowser.api import cmdutils
+
+
 
 # type: ignore
 # config = None  # qutebrowser injects this
@@ -2528,3 +2532,20 @@ for key, proxy in tables.proxy_table.items():
 
 for site in tables.force_dark_sites:
 	config.set('colors.webpage.darkmode.enabled', True, site)
+
+
+
+@cmdutils.register()
+def yt_mpv(url: str):
+    """Play a URL using yt-mpv.sh and qutebrowser's current proxy."""
+
+    proxy = config.get('content.proxy')
+
+    args = ['yt-mpv.sh', url]
+
+    if proxy not in ('system', 'none'):
+        args.append(proxy)
+
+    subprocess.Popen(args)
+
+

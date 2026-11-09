@@ -1,9 +1,6 @@
 {
-  inputs,
   config,
   pkgs,
-  nixgl,
-  lib,
   machine,
   theme,
   ...
@@ -52,11 +49,11 @@ in
     unrar
     aria2
     gost
-    qutebrowser
     firefox
     zellij
+	asciidoctor
 
-    nixfmt-rfc-style
+    nixfmt
     nixd
   ];
 
@@ -69,6 +66,7 @@ in
   imports = [
     ./niri
     ./zsh
+    ./qutebrowser
 
     ./moduals/wayland-screenshot.nix
     #./moduals/unity.nix
@@ -140,12 +138,7 @@ in
   xdg.configFile."mimeapps.list".force = true;
   xdg.mimeApps = {
     enable = true;
-
-    defaultApplications = {
-      "x-scheme-handler/http" = [ "org.qutebrowser.qutebrowser.desktop" ];
-      "x-scheme-handler/https" = [ "org.qutebrowser.qutebrowser.desktop" ];
-      "inode/directory" = [ "fff.desktop" ];
-    };
+    defaultApplications. "inode/directory" = [ "fff.desktop" ];
   };
 
   programs.mpv = {
